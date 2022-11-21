@@ -60,44 +60,55 @@
                   <h1>Selección de proyecto</h1>
                 </v-subheader>
 
-                <v-card-text class="d-inline-flex">
-                  <v-card
-                    v-for="item in projects"
-                    :key="item.id"
-                    elevation="2"
-                    width="200"
-                    class="ma-3"
-                    @click="tab = 0"
-                  >
-                    <v-card-title>
-                      {{ item.name }}
-                    </v-card-title>
-                    <v-card-subtitle> 3 Riesgos Identificados </v-card-subtitle>
-                    <v-card-actions>
-                      <v-btn
-                        color="deep-purple lighten-2"
-                        text
-                        @click="tab = 0"
-                      >
-                        Editar
-                      </v-btn>
-                      <v-btn
-                        color="deep-purple lighten-2"
-                        text
-                        @click="tab = 0"
-                      >
-                        Eliminar
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                  <v-card elevation="2" width="200" class="ma-3" height="100%">
-                    <v-card-text
-                      class="d-flex align-center justify-center h-100"
+                <v-card-text>
+                  <v-container>
+                    <v-row>
+                    <v-card
+                      v-for="item in projects"
+                      :key="item.id"
+                      elevation="2"
+                      width="200"
+                      class="ma-3"
+                      @click="tab = 0"
                     >
-                      <v-spacer></v-spacer>
-                      <v-btn> Nuevo proyecto </v-btn>
-                    </v-card-text>
-                  </v-card>
+                      <v-card-title>
+                        {{ item.name }}
+                      </v-card-title>
+                      <v-card-subtitle>
+                        3 Riesgos Identificados
+                      </v-card-subtitle>
+                      <v-card-actions>
+                        <v-btn
+                          color="deep-purple lighten-2"
+                          text
+                          @click="tab = 0"
+                        >
+                          Editar
+                        </v-btn>
+                        <v-btn
+                          color="deep-purple lighten-2"
+                          text
+                          @click="tab = 0"
+                        >
+                          Eliminar
+                        </v-btn>
+                      </v-card-actions>
+                    </v-card>
+
+                    <v-card
+                      elevation="2"
+                      width="200"
+                      class="ma-3"
+                    >
+                      <v-card-text
+                        class="d-flex align-center justify-center h-100"
+                      >
+                        <v-spacer></v-spacer>
+                        <v-btn> Nuevo proyecto </v-btn>
+                      </v-card-text>
+                    </v-card>
+                    </v-row>
+                  </v-container>
                 </v-card-text>
               </v-card>
             </template>
@@ -136,11 +147,7 @@
                     label="Formato"
                     required
                   ></v-select>
-                  <v-btn
-                    color="success"
-                    class="mr-4"
-                    @click="validate"
-                  >
+                  <v-btn color="success" class="mr-4" @click="validate">
                     Exportar
                   </v-btn>
                 </v-card-text>
@@ -237,12 +244,10 @@ export default {
       this.projects = this.projects.filter((item) => item.id != id);
       this.save();
     },
-    anadirProyecto() {
-      
-    },
+    anadirProyecto() {},
     save() {
-      ipcRenderer.invoke('save', this.projects);
-    }
+      ipcRenderer.invoke("save", this.projects);
+    },
   },
 };
 </script>
