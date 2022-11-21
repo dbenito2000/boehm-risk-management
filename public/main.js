@@ -47,3 +47,13 @@ function createWindow() {
 }
 app.commandLine.appendSwitch('disable-site-isolation-trials')
 app.on('ready', createWindow);
+
+
+
+ipcMain.handle('save', (event, projects) => {
+
+})
+
+ipcMain.handle('load', (event) => {
+    
+})

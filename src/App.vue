@@ -9,7 +9,7 @@
           height="18"
         />
       </v-img>
-      Risk Management Electron
+      Risk Management
       <v-spacer></v-spacer>
       <v-icon @click="minimizeWindow" style="-webkit-app-region: no-drag"
         >mdi-minus</v-icon
@@ -43,11 +43,16 @@
           </v-list-item>
         </v-list-item-group>
       </v-list>
+      <template v-slot:append>
+        <div class="pa-2" @click="tab = -1">
+          <v-btn block> MENU </v-btn>
+        </div>
+      </template>
     </v-navigation-drawer>
 
     <v-main>
       <v-container class="fill-height" fluid>
-        <v-row v-if="tab == -1" class="fill-height" align="stretch" >
+        <v-row v-if="tab == -1" class="fill-height" align="stretch">
           <v-col cols="12">
             <template>
               <v-card height="100%">
@@ -89,10 +94,8 @@
                     <v-card-text
                       class="d-flex align-center justify-center h-100"
                     >
-                    <v-spacer></v-spacer>
-                      <v-btn>
-                        Nuevo proyecto
-                      </v-btn>
+                      <v-spacer></v-spacer>
+                      <v-btn> Nuevo proyecto </v-btn>
                     </v-card-text>
                   </v-card>
                 </v-card-text>
@@ -105,9 +108,42 @@
           <v-col cols="12">
             <template>
               <v-card height="100%">
-                <v-subheader> Card base </v-subheader>
+                <v-subheader> Factores de Riesgo </v-subheader>
 
-                <v-card-text> </v-card-text>
+                <v-card-text>
+                  <v-data-table
+                    :headers="headers"
+                    :items="projects[selected].factors"
+                    :items-per-page="10"
+                    class="elevation-1"
+                  ></v-data-table>
+                </v-card-text>
+              </v-card>
+            </template>
+          </v-col>
+        </v-row>
+        <v-row v-if="tab == 1" class="fill-height">
+          <v-col cols="12">
+            <template>
+              <v-card height="100%">
+                <v-subheader> Exportar Informe </v-subheader>
+
+                <v-card-text>
+                  <v-select
+                    v-model="select"
+                    :items="['PDF', 'XLSX']"
+                    :rules="[(v) => !!v || 'Item is required']"
+                    label="Formato"
+                    required
+                  ></v-select>
+                  <v-btn
+                    color="success"
+                    class="mr-4"
+                    @click="validate"
+                  >
+                    Exportar
+                  </v-btn>
+                </v-card-text>
               </v-card>
             </template>
           </v-col>
@@ -124,13 +160,65 @@ export default {
   data: () => ({
     tab: -1,
     links: [
-      ["mdi-play", "Option 1", 0],
-      ["mdi-account", "Option 2", 1],
+      ["mdi-magnify", "Identificación", 0],
+      ["mdi-account", "Informe", 1],
     ],
+    headers: [
+      { text: "Factor", value: "name" },
+      { text: "Categoría", value: "categoria" },
+      { text: "Probabilidad", value: "probabilidad" },
+      { text: "Impacto", value: "impacto" },
+    ],
+    selected: 0,
     projects: [
-      { id: 1, name: "Proyecto 1" },
-      { id: 2, name: "Proyecto 2" },
-      { id: 3, name: "Proyecto 3" },
+      {
+        id: 1,
+        name: "Proyecto 1",
+        factors: [
+          {
+            name: "Cliente cambie los requerimientos...",
+            categoria: "Entorno desarrollo",
+            probabilidad: "0%",
+            impacto: "critico",
+          },
+          {
+            name: "Cliente cambie los requerimientos...",
+            categoria: "Entorno desarrollo",
+            probabilidad: "0%",
+            impacto: "critico",
+          },
+          {
+            name: "Cliente cambie los requerimientos...",
+            categoria: "Entorno desarrollo",
+            probabilidad: "0%",
+            impacto: "critico",
+          },
+        ],
+      },
+      {
+        id: 2,
+        name: "Proyecto 2",
+        factors: [
+          {
+            name: "Cliente cambie los requerimientos...",
+            categoria: "Entorno desarrollo",
+            probabilidad: "0%",
+            impacto: "critico",
+          },
+        ],
+      },
+      {
+        id: 3,
+        name: "Proyecto 3",
+        factors: [
+          {
+            name: "Cliente cambie los requerimientos...",
+            categoria: "Entorno desarrollo",
+            probabilidad: "0%",
+            impacto: "critico",
+          },
+        ],
+      },
     ],
   }),
   computed: {},
@@ -145,6 +233,16 @@ export default {
     maximizeWindow() {
       ipcRenderer.send("maximize-window");
     },
+    eliminarProyecto(id) {
+      this.projects = this.projects.filter((item) => item.id != id);
+      this.save();
+    },
+    anadirProyecto() {
+      
+    },
+    save() {
+      ipcRenderer.invoke('save', this.projects);
+    }
   },
 };
 </script>
