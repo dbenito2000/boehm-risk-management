@@ -3,8 +3,9 @@ const { app, BrowserWindow, ipcMain, session, Notification } = require('electron
 const isDev = require('electron-is-dev');
 const path = require('path');
 
-
-/* console.log(skins) */
+function debug(str) {
+    console.log('[ELECTRON RISK MANAGEMENT] ' + str);
+}
 
 
 let mainWindow;
