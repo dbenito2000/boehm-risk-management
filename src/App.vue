@@ -9,7 +9,7 @@
           height="18"
         />
       </v-img>
-      Risk Management
+      Factores de Riesgo
       <v-spacer></v-spacer>
       <v-icon @click="minimizeWindow" style="-webkit-app-region: no-drag"
         >mdi-minus</v-icon
@@ -166,13 +166,13 @@
 
                 <v-card-text>
                   <v-select
-                    v-model="select"
-                    :items="['PDF', 'XLSX']"
+                    v-model="exportType"
+                    :items="['PDF']"
                     :rules="[(v) => !!v || 'Item is required']"
                     label="Formato"
                     required
                   ></v-select>
-                  <v-btn color="success" class="mr-4" @click="validate">
+                  <v-btn color="success" class="mr-4" @click="exportar" :loading="exportLoading">
                     Exportar
                   </v-btn>
                 </v-card-text>
@@ -307,6 +307,8 @@ const { ipcRenderer } = window.require("electron");
 
 export default {
   data: () => ({
+    exportLoading: false,
+    exportType: 'PDF',
     newProjectName: "",
     newProject: false,
     newFactorName: "",
@@ -328,7 +330,7 @@ export default {
       "Experiencia y tamaño de equipo",
     ],
     links: [
-      ["mdi-magnify", "Identificación", 0],
+      ["mdi-magnify", "Factores", 0],
       ["mdi-account", "Informe", 1],
     ],
     headers: [
@@ -343,8 +345,9 @@ export default {
   }),
   computed: {},
   mounted: async function () {
-    
+    ipcRenderer.on('error', (event, error) => {console.log("[ERROR] " + error)})
     this.projects = await ipcRenderer.invoke("load");
+    /* console.log(JSON.stringify(this.projects)) */
     console.log("[FRONT] Loaded project list.");
   },
   methods: {
@@ -387,6 +390,11 @@ export default {
       this.newFactorProbability = 0;
       this.newFactorImpact = 1;
       this.save();
+    },
+    async exportar() {
+      this.exportLoading = true;
+      await ipcRenderer.invoke("export", this.projects[this.selected], this.exportType);
+      this.exportLoading = false;
     },
     addProject() {
       this.projects.push({
