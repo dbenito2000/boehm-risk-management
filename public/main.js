@@ -2,7 +2,8 @@
 const { app, BrowserWindow, ipcMain, session, Notification } = require('electron');
 const isDev = require('electron-is-dev');
 const path = require('path');
-
+const Store = require('electron-store');
+const store = new Store();
 function debug(str) {
     console.log('[ELECTRON RISK MANAGEMENT] ' + str);
 }
@@ -16,7 +17,7 @@ function createWindow() {
     // Create the browser window.
     const win = new BrowserWindow({
 
-        width: 900,
+        width: 1200,
         height: 800,
         show: false,
         webPreferences: {
@@ -51,9 +52,9 @@ app.on('ready', createWindow);
 
 
 ipcMain.handle('save', (event, projects) => {
-
+    store.set('projects', projects);
 })
 
 ipcMain.handle('load', (event) => {
-    
+    return store.get('projects') ?? [];
 })
