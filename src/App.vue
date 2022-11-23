@@ -74,6 +74,7 @@
                         @click="
                           selected = index;
                           tab = 0;
+                          selectedItem = 0;
                         "
                       >
                         <v-card-title>

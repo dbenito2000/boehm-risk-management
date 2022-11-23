@@ -12,6 +12,7 @@
     "electron:start": "wait-on tcp:8080 && electron ."
   },
   "build": {
+    "asar": false,
     "productName": "USAL Risk Management",
     "extends": null,
     "appId": "com.dbenito2000.rme",
