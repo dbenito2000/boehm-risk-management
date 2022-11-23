@@ -3,21 +3,21 @@
     <v-system-bar app style="-webkit-app-region: drag" height="35">
       <v-img style="margin-top: 3px">
         <img
-          src="https://bisite.usal.es/archivos/usal_es_hor.png"
+          src="https://i.imgur.com/NrOINMS.png"
           alt="topbar-icon"
-          width="60"
-          height="18"
+          width="70"
+          height="24"
         />
       </v-img>
       Factores de Riesgo
       <v-spacer></v-spacer>
-      <v-icon @click="minimizeWindow" style="-webkit-app-region: no-drag"
+      <v-icon @click="minimizeWindow" small style="-webkit-app-region: no-drag"
         >mdi-minus</v-icon
       >
-      <v-icon @click="maximizeWindow" style="-webkit-app-region: no-drag"
+      <v-icon @click="maximizeWindow" small style="-webkit-app-region: no-drag"
         >mdi-checkbox-blank-outline</v-icon
       >
-      <v-icon @click="closeWindow" style="-webkit-app-region: no-drag"
+      <v-icon @click="closeWindow" small style="-webkit-app-region: no-drag"
         >mdi-close</v-icon
       >
     </v-system-bar>
@@ -52,10 +52,10 @@
 
     <v-main>
       <v-container class="fill-height" fluid>
-        <v-row v-if="tab == -1" class="fill-height" align="stretch">
-          <v-col cols="12">
+        <v-row v-if="tab == -1" class="fill-height pa-0" align="stretch">
+          <v-col cols="12" class="pa-0">
             <template>
-              <v-card height="100%">
+              <v-card height="100%" class="pa-0" color="transparent">
                 <!--  <v-subheader>
                   <h1>Selección de proyecto</h1>
                 </v-subheader> -->

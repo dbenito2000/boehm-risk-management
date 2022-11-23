@@ -133,10 +133,10 @@
 
         table .qty {}
 
-        table .total {
+        /* table .total {
             background: #db3311;
             color: #FFFFFF;
-        }
+        } */
 
         table td.unit,
         table td.qty,
@@ -234,6 +234,7 @@
                     <th class="unit">Categoría</th>
                     <th class="qty">Probabilidad</th>
                     <th class="total">Impacto</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody id="invoiceItems">
@@ -246,7 +247,8 @@
                     </td>
                     <td class="unit">{{this.categoria}}</td>
                     <td class="qty">{{this.probabilidad}}%</td>
-                    <td class="total" style="background-color: {{this.color}}">{{this.impacto}}</td>
+                    <td class="total" >{{this.impacto}}</td>
+                    <td style="background-color: {{this.color}}"> </td>
                 </tr>
                 
                 {{/each}}
