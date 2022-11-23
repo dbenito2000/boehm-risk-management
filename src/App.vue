@@ -65,7 +65,6 @@
                   <v-container>
                     <v-row>
                       <v-card
-                        
                         v-for="(item, index) in projects"
                         :key="item.name"
                         elevation="2"
@@ -123,41 +122,44 @@
         </v-row>
 
         <v-row v-if="tab == 0 && projects.length > 0" class="fill-height">
-          <v-col cols="12">
-            <template>
-              <v-card height="100%">
-                <v-subheader>
-                  Factores de Riesgo
-                  <v-spacer></v-spacer>
-                  <v-btn @click="newFactor = true"> Nuevo Factor </v-btn>
-                </v-subheader>
+          <perfect-scrollbar>
+            <v-col cols="12">
+              <template>
+                <v-card height="100%">
+                  <v-subheader>
+                    Factores de Riesgo
+                    <v-spacer></v-spacer>
+                    <v-btn @click="newFactor = true"> Nuevo Factor </v-btn>
+                  </v-subheader>
 
-                <v-card-text v-if="projects.length > 0">
-                  <v-data-table
-                    :headers="headers"
-                    :items="projects[selected].factors"
-                    
-                    @click:row="editItem"
-                  >
-                    <template v-slot:item.probabilidad="{ item }">
-                      {{ item.probabilidad }}%
-                    </template>
-                    <template v-slot:item.actions="{ item }">
-                      <v-icon small class="mr-2" @click="editItem(item)">
-                        mdi-pencil
-                      </v-icon>
-                      <v-icon small @click="deleteItem(item)">
-                        mdi-delete
-                      </v-icon>
-                    </template>
-                    <template v-slot:no-data>
-                      <v-btn color="primary" @click="initialize"> Reset </v-btn>
-                    </template>
-                  </v-data-table>
-                </v-card-text>
-              </v-card>
-            </template>
-          </v-col>
+                  <v-card-text v-if="projects.length > 0">
+                    <v-data-table
+                      :headers="headers"
+                      :items="projects[selected].factors"
+                      @click:row="editItem"
+                    >
+                      <template v-slot:item.probabilidad="{ item }">
+                        {{ item.probabilidad }}%
+                      </template>
+                      <template v-slot:item.actions="{ item }">
+                        <v-icon small class="mr-2" @click="editItem(item)">
+                          mdi-pencil
+                        </v-icon>
+                        <v-icon small @click="deleteItem(item)">
+                          mdi-delete
+                        </v-icon>
+                      </template>
+                      <template v-slot:no-data>
+                        <v-btn color="primary" @click="initialize">
+                          Reset
+                        </v-btn>
+                      </template>
+                    </v-data-table>
+                  </v-card-text>
+                </v-card>
+              </template>
+            </v-col>
+          </perfect-scrollbar>
         </v-row>
         <v-row v-if="tab == 1" class="fill-height">
           <v-col cols="12">
@@ -173,7 +175,12 @@
                     label="Formato"
                     required
                   ></v-select>
-                  <v-btn color="success" class="mr-4" @click="exportar" :loading="exportLoading">
+                  <v-btn
+                    color="success"
+                    class="mr-4"
+                    @click="exportar"
+                    :loading="exportLoading"
+                  >
                     Exportar
                   </v-btn>
                 </v-card-text>
@@ -309,7 +316,7 @@ const { ipcRenderer } = window.require("electron");
 export default {
   data: () => ({
     exportLoading: false,
-    exportType: 'PDF',
+    exportType: "PDF",
     newProjectName: "",
     newProject: false,
     newFactorName: "",
@@ -346,7 +353,9 @@ export default {
   }),
   computed: {},
   mounted: async function () {
-    ipcRenderer.on('error', (event, error) => {console.log("[ERROR] " + error)})
+    ipcRenderer.on("error", (event, error) => {
+      console.log("[ERROR] " + error);
+    });
     this.projects = await ipcRenderer.invoke("load");
     /* console.log(JSON.stringify(this.projects)) */
     console.log("[FRONT] Loaded project list.");
@@ -394,7 +403,11 @@ export default {
     },
     async exportar() {
       this.exportLoading = true;
-      await ipcRenderer.invoke("export", this.projects[this.selected], this.exportType);
+      await ipcRenderer.invoke(
+        "export",
+        this.projects[this.selected],
+        this.exportType
+      );
       this.exportLoading = false;
     },
     addProject() {
@@ -474,10 +487,6 @@ html {
 }
 
 .ps {
-  height: 80vh;
-}
-
-.v-toast__text {
-  font-family: "Roboto", sans-serif;
+  height: 100%;
 }
 </style>
